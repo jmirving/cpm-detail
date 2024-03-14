@@ -8,9 +8,6 @@ def get_puuid(game_tag, tag_line,api_key):
     return puuid_response_dict.get("puuid")
 
 
-
-
-
 def get_last_match(puuid, api_key):
     get_match_url = str.format("https://americas.api.riotgames.com/lol/match/v5/matches/by-puuid/{0}/ids?start=0&count=20&api_key={1}", puuid,
                api_key)

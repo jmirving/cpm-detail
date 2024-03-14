@@ -1,5 +1,5 @@
 import requests
-import service.detail
+import service.riotapi
 import configparser
 
 config = configparser.ConfigParser()
@@ -16,24 +16,14 @@ api_key = config.get('API Key', 'api_key')
 puuid = service.detail.get_puuid(game_tag, tag_line, api_key)
 
 #get last match id
-last_match = service.detail.get_last_match(puuid, api_key)
+match_id = service.detail.get_last_match(puuid, api_key)
 
-#get match details
-get_match_detail_url = str.format("https://americas.api.riotgames.com/lol/match/v5/matches/{0}?api_key={1}",last_match, api_key)
-match_detail_response = requests.get(get_match_detail_url)
-match_detail_response_dict = match_detail_response.json()
-participants = match_detail_response_dict.get("info").get("participants")
-
-participant_id = ""
-for participant in participants:
-    if participant.get("puuid") == puuid:
-        participant_id = participant.get("participantId")
+#get participant id
+participant_id = service.detail.get_users_participant_id(match_id, puuid, api_key)
 
 #get match timeline
-get_match_timeline_url = str.format("https://americas.api.riotgames.com/lol/match/v5/matches/{0}/timeline?api_key={1}",last_match, api_key)
-match_timeline_response = requests.get(get_match_timeline_url)
-match_timeline_response_dict = match_timeline_response.json()
-frames = match_timeline_response_dict.get("info").get("frames")
+match_timeline = service.detail.get_match_timeline(match_id, api_key)
+frames = match_timeline.get("info").get("frames")
 
 minute_count = 0;
 minion_data_dict = {}

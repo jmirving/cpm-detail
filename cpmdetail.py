@@ -1,28 +1,30 @@
 import requests
 import service.riotapi
+import input.userinput
 import configparser
 
 config = configparser.ConfigParser()
 config.read_file(open(r'api-key.txt'))
 
+user_input = input.userinput.getuser()
 #game tag
-game_tag="3nderWiggin"
+game_tag=user_input.get('game_tag')
 #tag_line
-tag_line="NA1"
+tag_line=user_input.get('tag_line')
 #api key
 api_key = config.get('API Key', 'api_key')
 
 # get the puuid
-puuid = service.detail.get_puuid(game_tag, tag_line, api_key)
+puuid = service.riotapi.get_puuid(game_tag, tag_line, api_key)
 
 #get last match id
-match_id = service.detail.get_last_match(puuid, api_key)
+match_id = service.riotapi.get_last_match(puuid, api_key)
 
 #get participant id
-participant_id = service.detail.get_users_participant_id(match_id, puuid, api_key)
+participant_id = service.riotapi.get_users_participant_id(match_id, puuid, api_key)
 
 #get match timeline
-match_timeline = service.detail.get_match_timeline(match_id, api_key)
+match_timeline = service.riotapi.get_match_timeline(match_id, api_key)
 frames = match_timeline.get("info").get("frames")
 
 minute_count = 0;

@@ -1,8 +1,10 @@
+import cpmdetail
 from flask import Flask, render_template, redirect, url_for
 from flask_bootstrap import Bootstrap5
 from flask_wtf import FlaskForm, CSRFProtect
 
 from myforms.nameform import NameForm
+from cpmdetail import get_matches
 import secrets
 
 secret_key = secrets.token_urlsafe(16)
@@ -26,5 +28,6 @@ def index():
     if form.validate_on_submit():
         game_tag = form.gametag.data
         tag_line = form.tagline.data
-        message = str(f"Searching for games from {game_tag}#{tag_line}")
+        matches = cpmdetail.get_matches(game_tag, tag_line)
+        message = str(f"Found {len(matches)} games for {game_tag}#{tag_line}")
     return render_template('index.html', form=form, message=message)

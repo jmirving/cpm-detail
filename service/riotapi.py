@@ -14,6 +14,8 @@ def get_last_match(puuid, api_key):
     match_response = requests.get(get_match_url)
     match_response_dict = match_response.json()
     return match_response_dict[0]
+
+
 def get_matches(puuid, api_key, num_matches):
     get_match_url = str.format(
         "https://americas.api.riotgames.com/lol/match/v5/matches/by-puuid/{0}/ids?start=0&count=20&api_key={1}", puuid,
@@ -25,9 +27,7 @@ def get_matches(puuid, api_key, num_matches):
     matches_added = 0
     return_matches = []
     for match in match_response_list:
-        print("in loop")
         if matches_added < num_matches:
-            print("in if")
             return_matches.append(match_response_list[matches_added])
             matches_added = matches_added + 1
         else:

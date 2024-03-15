@@ -1,6 +1,30 @@
-from flask import Flask
-app = Flask(__name__)
+from flask import Flask, render_template, redirect, url_for
+from flask_bootstrap import Bootstrap5
+from flask_wtf import FlaskForm, CSRFProtect
 
-@app.route("/")
+from myforms.nameform import NameForm
+import secrets
+
+secret_key = secrets.token_urlsafe(16)
+
+app = Flask(__name__)
+app.secret_key = secret_key
+
+# Bootstrap-Flask requires this line
+bootstrap = Bootstrap5(app)
+# Flask-WTF requires this line
+csrf = CSRFProtect(app)
+
+@app.route("/hello-world")
 def hello():
     return "Hello World"
+
+@app.route("/", methods=['GET','POST'])
+def index():
+    form = NameForm()
+    message = ""
+    if form.validate_on_submit():
+        game_tag = form.gametag.data
+        tag_line = form.tagline.data
+        message = str(f"Searching for games from {game_tag}#{tag_line}")
+    return render_template('index.html', form=form, message=message)

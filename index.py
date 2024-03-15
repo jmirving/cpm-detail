@@ -4,6 +4,7 @@ from flask_bootstrap import Bootstrap5
 from flask_wtf import FlaskForm, CSRFProtect
 
 from myforms.nameform import NameForm
+from myforms.matchform import MatchForm
 from cpmdetail import get_matches
 import secrets
 
@@ -29,5 +30,15 @@ def index():
         game_tag = form.gametag.data
         tag_line = form.tagline.data
         matches = cpmdetail.get_matches(game_tag, tag_line)
-        message = str(f"Found {len(matches)} games for {game_tag}#{tag_line}")
+        matches_length = len(matches)
+        if matches_length > 0:
+            # matches_form = MatchesForm()
+            message = str(f"Matches for: {game_tag}#{tag_line}")
+            print(message)
+            return render_template('matches.html', form=form, message=message, matches_length=matches_length, matches=matches)
+        else:
+            message = str(f"No matches found for: {game_tag}#{tag_line}. Check for typos and try again")
+            print(message)
+            return render_template('index.html', form=form, message=message)
+
     return render_template('index.html', form=form, message=message)

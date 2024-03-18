@@ -7,12 +7,12 @@
 
       <h1 class="pt-5 pb-2">CPM Detail</h1>
 
-      <p class="lead">CPM Detail: Matches</p>
+      <p class="lead">CPM Detail: Match CPM Detail</p>
 
       <p class="pt-5"><strong>{{ message }}</strong></p>
 
-      <ul>{% for i in range(0, matches_length) %}
-        <li><a href="{{ url_for('match', puuid = puuid, id = matches[i]) }}">{{ matches[i] }}</a></li>
+      <ul>{% for i in range(0, frame_length) %}
+        <li>Minute: {{ i }} {{ csm_detail[i] }}</li>
         {% endfor %}
       </ul>
 

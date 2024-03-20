@@ -1,11 +1,15 @@
 import requests
+from flask import redirect, url_for
+
 
 def get_puuid(game_tag, tag_line, api_key):
     # get the puuid
     get_puuid_url = str.format("https://americas.api.riotgames.com/riot/account/v1/accounts/by-riot-id/{0}/{1}?api_key={2}",
                                game_tag, tag_line, api_key)
     puuid_response_dict = get_response_json(get_puuid_url)
-    return puuid_response_dict.get("puuid")
+    if "puuid" in puuid_response_dict:
+        return puuid_response_dict.get("puuid")
+
 
 
 def get_last_match(puuid, api_key):
@@ -52,5 +56,5 @@ def get_response_json(url):
     status_code = response.status_code
     if (status_code != 200):
         print(f"Status code: {status_code} for url: {url}")
-        exit(1)
+
     return response.json()

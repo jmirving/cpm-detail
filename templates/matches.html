@@ -1,18 +1,18 @@
+{% extends "base.html" %}
 {% from 'bootstrap5/form.html' import render_form %}
+{% block title%}Returned Matches{% endblock%}
 {% block content %}
 
 <div class="container">
   <div class="row">
     <div class="col-md-10 col-lg-8 mx-lg-auto mx-md-auto">
 
-      <h1 class="pt-5 pb-2">CPM Detail</h1>
-
-      <p class="lead">CPM Detail: Matches</p>
+      <h1 class="pt-5 pb-2">Match Results</h1>
 
       <p class="pt-5"><strong>{{ message }}</strong></p>
 
       <ul>{% for i in range(0, matches_length) %}
-        <li><a href="{{ url_for('match', puuid = puuid, id = matches[i]) }}">{{ matches[i] }}</a></li>
+        <li>{{ matches[i] }}</li>
         {% endfor %}
       </ul>
 

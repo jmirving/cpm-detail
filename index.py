@@ -30,8 +30,8 @@ def index():
         game_tag = form.gametag.data
         tag_line = form.tagline.data
         puuid = cpmdetail.get_puuid(game_tag, tag_line)
-        if len(puuid) <= 0:
-            message = str(f"No account found for: {game_tag}#{tag_line}. Check for typos and try again")
+        if "status" in puuid:
+            message = puuid["status"]["message"]
             print(message)
             return render_template('index.html', form=form, message=message)
 

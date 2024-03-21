@@ -1,13 +1,13 @@
+{% extends "base.html" %}
 {% from 'bootstrap5/form.html' import render_form %}
+{% block title%}Home Page{% endblock%}
 {% block content %}
 
 <div class="container">
   <div class="row">
     <div class="col-md-10 col-lg-8 mx-lg-auto mx-md-auto">
 
-      <h1 class="pt-5 pb-2">CPM Detail</h1>
-
-      <p class="lead">Welcome to CPM Detail</p>
+      <h1 class="pt-5 pb-2">Welcome to CPM Detail</h1>
 
       {{ render_form(form) }}
 

@@ -58,3 +58,6 @@ def match(puuid, id):
     csm_detail = cpmdetail.get_cs_per_frame(participant_id, frames)
     print(str(f"Getting {id} match for {puuid}:{participant_id}"))
     return render_template('match-detail.html', message=message, csm_detail=csm_detail, frame_length=len(frames))
+
+if __name__ == "__main__":
+    app.run(debug=True)

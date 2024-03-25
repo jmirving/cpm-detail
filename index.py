@@ -40,8 +40,10 @@ def index():
         if matches_length > 0:
             message = str(f"Matches for: {game_tag}#{tag_line}")
             print(message)
+            matches_ux = cpmdetail.get_matches_ux(matches,puuid)
+
             return render_template('matches.html', form=form, message=message, matches_length=matches_length,
-                                   matches=matches, puuid=puuid)
+                                   matches_ux=matches_ux, matches=matches, puuid=puuid)
         else:
             message = str(f"{game_tag}#{tag_line} found but no recent matches. Check for typos and try again")
             print(message)
@@ -53,10 +55,11 @@ def index():
 @app.route("/<puuid>/match/<id>")
 def match(puuid, id):
     message = str(f"You clicked the match id: {id}")
-    participant_id = cpmdetail.get_participant(id, puuid)
-    frames = cpmdetail.get_match_timeline(id)
+    match_id = id
+    participant_id = cpmdetail.get_participant(match_id, puuid)
+    frames = cpmdetail.get_match_timeline(match_id)
     csm_detail = cpmdetail.get_cs_per_frame(participant_id, frames)
-    print(str(f"Getting {id} match for {puuid}:{participant_id}"))
+    print(str(f"Getting {match_id} match for {puuid}:{participant_id}"))
     return render_template('match-detail.html', message=message, csm_detail=csm_detail, frame_length=len(frames))
 
 if __name__ == "__main__":

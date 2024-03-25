@@ -16,6 +16,10 @@ def get_matches(puuid):
     return service.riotapi.get_matches(puuid, api_key, 5)
 
 
+def get_matches_ux(matches, puuid):
+    return service.riotapi.get_matches_ux(matches, puuid, api_key)
+
+
 def get_participant(match_id, puuid):
     # get participant id
     return service.riotapi.get_users_participant_id(match_id, puuid, api_key)

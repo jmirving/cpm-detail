@@ -3,21 +3,69 @@
 {% block title%}Returned Matches{% endblock%}
 {% block content %}
 
-<div class="container">
+<div class="container text-center pt-8 pb-5">
   <div class="row">
-    <div class="col-md-10 col-lg-8 mx-lg-auto mx-md-auto">
-
-      <h1 class="pt-5 pb-2">Match Results</h1>
-
-      <p class="pt-5"><strong>{{ message }}</strong></p>
-
-      <ul>{% for i in range(0, matches_length) %}
-        <li><a href="{{ url_for('match', puuid = puuid, id = matches[i]) }}">{{ matches[i] }}</a></li>
-        {% endfor %}
-      </ul>
-
+    <div class="col-xl-12">
+      <h1>Match Results</h1>
     </div>
   </div>
 </div>
+
+{% for k, v in matches_ux.items(): %}
+	<div class="container text-center pt-3 pb-3">
+		<div class="row clickable-row pt-2" style="background-color:#40ff00;">
+			<a href="{{ url_for('match', puuid = puuid, id = v['match']) }}">{{v['match']}}</a>
+			<div class="col-md-12">
+				<div class="row">
+					<div class="col-md-6">
+						<div class="row">
+							<div class="col-md-6">
+								<p><strong>Summoner:</strong> {{v['riotIdGameName']}}</p>
+							</div>
+							<div class="col-md-6">
+								<p><strong>Game Date: </strong> {{ v['gameCreation'] }}</p>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="row">
+							<div class="col-md-6">
+								<p><strong>Game Length:</strong> {{v['gameDuration']}}</p>
+							</div>
+							<div class="col-md-6">
+								<p><strong>Game Mode:</strong> {{v['gameMode']}}</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="row">
+							<div class="col-md-6">
+								<p><strong>Victory: </strong>{{v['win']}}</p>
+							</div>
+							<div class="col-sm-3">
+								<p><strong>KDA</strong> {{v['kda']}}</p>
+							</div>
+							<div class="col-sm-3">
+								<p><strong>{{v['kills']}}/{{v['deaths']}}/{{v['assists']}}</strong></p>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="row">
+							<div class="col-md-6">
+								<p><strong>{{v['lane']}}</strong></p>
+							</div>
+							<div class="col-md-6">
+								<p><strong>{{v['championName']}}</strong></p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endfor %}
 
 {% endblock %}

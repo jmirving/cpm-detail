@@ -11,7 +11,7 @@
   </div>
 </div>
 
-{% for k, v in matches_ux.items(): %}
+{% for k, v in Match_Detail_Dict.items(): %}
 	<div class="container text-center pt-3 pb-3">
 		<div class="row clickable-row pt-2" style="background-color:#40ff00;">
 			<a href="{{ url_for('match', puuid = puuid, id = v['match']) }}">{{v['match']}}</a>

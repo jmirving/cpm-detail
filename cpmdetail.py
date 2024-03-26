@@ -1,3 +1,4 @@
+import models.match_detail
 import service.riotapi
 import configparser
 import datetime
@@ -22,37 +23,16 @@ def get_match_detail(matches, puuid):
     for match in matches:
         match_id = match
         data = service.riotapi.get_match_detail(match_id, puuid, api_key)
-
-        timestamp = data.get('info', {}).get('gameCreation') // 1000
-
-        a = datetime.fromtimestamp(timestamp)
-
-        date_time_str = a.strftime("%m-%d %I:%M %p")
-
-        gameDuration = time.strftime('%H:%M:%S',
-                                     time.gmtime(data.get('info', {}).get('gameDuration')))
-
-        match_id_dict = {'gameCreation': date_time_str, 'gameDuration': gameDuration,
-                         'gameMode': data.get('info', {}).get('gameMode'), 'match': match_id}
-
+        data['puuid'] = puuid
         participants = data.get("info").get("participants")
+        participant = [item for (index, item) in enumerate(participants) if item.get("puuid") == puuid]
+        participant_detail = {k: v for e in participant for (k, v) in e.items()}
 
-        for participant in participants:
-            if participant.get("puuid") == puuid:
-                match_id_dict['deaths'] = participant.get("deaths")
-                match_id_dict['kills'] = participant.get("kills")
-                match_id_dict['assists'] = participant.get("assists")
-                kda = round(participant.get('challenges', {}).get("kda"), 1)
-                match_id_dict['kda'] = kda
-                match_id_dict['championId'] = participant.get("championId")
-                match_id_dict['championName'] = participant.get("championName")
-                match_id_dict['championTransform'] = participant.get("championTransform")
-                match_id_dict['lane'] = participant.get("lane")
-                match_id_dict['role'] = participant.get("role")
-                match_id_dict['individualPosition'] = participant.get("individualPosition")
-                match_id_dict['win'] = participant.get("win")
-                match_id_dict['participantId'] = participant.get("participantId")
-                match_id_dict['riotIdGameName'] = participant.get("riotIdGameName")
+        match_detail = models.match_detail.MatchDetails(data)
+
+        match_participant_detail = models.match_detail.ParticipantMatchDetails(participant_detail)
+
+        match_id_dict = models.match_detail.merge(match_detail,match_participant_detail)
 
         matches_dict[match_id] = match_id_dict
 

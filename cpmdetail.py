@@ -1,7 +1,9 @@
-import requests
+import models.match_detail
 import service.riotapi
-import input.userinput
 import configparser
+import datetime
+from datetime import datetime
+import time
 
 config = configparser.ConfigParser()
 config.read_file(open(r'api-key.txt'))
@@ -14,6 +16,27 @@ def get_puuid(game_tag, tag_line):
 
 def get_matches(puuid):
     return service.riotapi.get_matches(puuid, api_key, 5)
+
+
+def get_match_detail(matches, puuid):
+    matches_dict = {}
+    for match in matches:
+        match_id = match
+        data = service.riotapi.get_match_detail(match_id, puuid, api_key)
+        data['puuid'] = puuid
+        participants = data.get("info").get("participants")
+        participant = [item for (index, item) in enumerate(participants) if item.get("puuid") == puuid]
+        participant_detail = {k: v for e in participant for (k, v) in e.items()}
+
+        match_detail = models.match_detail.MatchDetails(data)
+
+        match_participant_detail = models.match_detail.ParticipantMatchDetails(participant_detail)
+
+        match_id_dict = models.match_detail.merge(match_detail,match_participant_detail)
+
+        matches_dict[match_id] = match_id_dict
+
+    return matches_dict
 
 
 def get_matches_ux(matches, puuid):

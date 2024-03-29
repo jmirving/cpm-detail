@@ -40,10 +40,10 @@ def index():
         if matches_length > 0:
             message = str(f"Matches for: {game_tag}#{tag_line}")
             print(message)
-            matches_ux = cpmdetail.get_matches_ux(matches,puuid)
+            match_detail_dict = cpmdetail.get_match_detail(matches,puuid)
 
             return render_template('matches.html', form=form, message=message, matches_length=matches_length,
-                                   matches_ux=matches_ux, matches=matches, puuid=puuid)
+                                   match_detail_dict=match_detail_dict, matches=matches, puuid=puuid)
         else:
             message = str(f"{game_tag}#{tag_line} found but no recent matches. Check for typos and try again")
             print(message)

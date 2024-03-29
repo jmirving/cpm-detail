@@ -1,0 +1,40 @@
+:root {
+    --nav-bar:#054A29;
+    --nav-bar-link:#91E86A;
+    --high-contrast:#40FF00;
+    --neutral:#89B0A8;
+    --darker-neutral:#69A297;
+    --low-intensity-negative:#61210F;
+    --negative:#EA2B1F;
+}
+
+.custom-click-row {
+    background-color: var(--high-contrast);
+    a:link {
+        color: var(--nav-bar);
+    }
+    a:visited {
+        color: var(--nav-bar);
+    }
+    a:hover {
+        color: var(--darker-neutral);
+    }
+}
+.base-row {
+    background-color: var(--neutral);
+}
+.highlight-row {
+    background-color: var(--darker-neutral);
+}
+.custom-navbar {
+    background-color: var(--nav-bar);
+    a:link {
+        color: var(--nav-bar-link);
+    }
+    a:visited {
+        color: var(--nav-bar-link);
+    }
+    a:hover {
+        color: white;
+    }
+}

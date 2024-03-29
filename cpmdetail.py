@@ -5,6 +5,10 @@ import datetime
 from datetime import datetime
 import time
 
+JUNGLE_CS = "jungle_cs"
+
+LANE_CS = "lane_cs"
+
 config = configparser.ConfigParser()
 config.read_file(open(r'api-key.txt'))
 api_key = config.get('API Key', 'api_key')
@@ -59,18 +63,31 @@ def get_cs_per_frame(participant_id, frames):
     for frame in frames:
         participant_frame = frame.get("participantFrames").get(str(participant_id))
         minions_killed = participant_frame.get("minionsKilled")
-        minion_data_dict[minute_count] = minions_killed
+        jungle_minions_killed = participant_frame.get("jungleMinionsKilled")
+        minions_dict = {LANE_CS: minions_killed, ("%s" % JUNGLE_CS): jungle_minions_killed}
+        minion_data_dict[minute_count] = minions_dict
 
         minute_count = minute_count + 1
 
-    previous_value = 0
+    lane_cs_previous_value = 0
+    jungle_cs_previous_value = 0
+    total_cs = 0
     frame_count = 0
-    output_string_list = []
+    output_dict = {}
     for frame in minion_data_dict:
         minions = minion_data_dict[frame]
-        frame_diff = minions - previous_value
-        output_string_list.append(str.format("CS: {1} - CS Since Last Frame: {2}", frame, minions, frame_diff))
-        previous_value = minions
+        lane_cs = minions[LANE_CS]
+        jungle_cs = minions[JUNGLE_CS]
+
+        total_cs = lane_cs + jungle_cs
+        lane_frame_diff = lane_cs - lane_cs_previous_value
+        jungle_frame_diff = jungle_cs - jungle_cs_previous_value
+
+        output_dict[frame_count] = {"total": total_cs, "lane_diff": lane_frame_diff, "jungle_diff": jungle_frame_diff}
+
+        # increments
+        lane_cs_previous_value = lane_cs_previous_value + lane_frame_diff
+        jungle_cs_previous_value = jungle_cs_previous_value + jungle_frame_diff
         frame_count = frame_count + 1
 
-    return output_string_list
+    return output_dict

@@ -54,7 +54,7 @@ def index():
 
 @app.route("/<puuid>/match/<id>")
 def match(puuid, id):
-    message = str(f"You clicked the match id: {id}")
+    message = str(f"CSM for {id}")
     match_id = id
     participant_id = cpmdetail.get_participant(match_id, puuid)
     frames = cpmdetail.get_match_timeline(match_id)

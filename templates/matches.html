@@ -13,7 +13,7 @@
 
 {% for k, v in match_detail_dict.items(): %}
 	<div class="container text-center pt-3 pb-3">
-		<div class="row clickable-row pt-2" style="background-color:#40ff00;">
+		<div class="row clickable-row pt-2 custom-click-row" >
 			<a href="{{ url_for('match', puuid = puuid, id = v['matchId']) }}">{{v['matchId']}}</a>
 			<div class="col-md-12">
 				<div class="row">

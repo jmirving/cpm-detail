@@ -40,9 +40,7 @@ def index_post():
         try:
             detailed_matches_dict = cpmdetail.get_matches_from_user_input(game_tag, tag_line)
             message = str(f"Matches for: {game_tag}#{tag_line}")
-            puuid = next(iter(detailed_matches_dict))
-            detailed_matches = detailed_matches_dict.get(puuid)
-            return render_template('matches.html', form=form, message=message, matches_length=len(detailed_matches), detailed_matches_dict=detailed_matches, puuid=puuid)
+            return render_template('matches.html', form=form, message=message, matches_length=len(detailed_matches_dict), detailed_matches_dict=detailed_matches_dict)
         except NotFoundError as ex:
             return render_template('index.html', form=form, message=ex.message)
     return render_template('index.html', form=form, message="Invalid Form")

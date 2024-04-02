@@ -12,10 +12,6 @@ config.read_file(open(r'api-key.txt'))
 api_key = config.get('API Key', 'api_key')
 
 try:
-    def get_puuid(game_tag, tag_line):
-        return service.riotapi.get_puuid(game_tag, tag_line, api_key)
-
-
     def get_matches(puuid):
         return service.riotapi.get_matches(puuid, api_key, 5)
 
@@ -42,7 +38,7 @@ try:
     def get_matches_from_user_input(game_tag, tag_line):
         puuid = service.riotapi.get_puuid(game_tag, tag_line, api_key)
         matches = get_matches(puuid)
-        return {puuid: get_match_detail(matches, puuid)}
+        return get_match_detail(matches, puuid)
 
     def get_match_timeline(match_id):
         # get match timeline

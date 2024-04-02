@@ -1,9 +1,7 @@
 import configparser
-from flask import render_template
 import models.match_detail
 import service.riotapi
 from errors.not_found_error import NotFoundError
-from myforms.nameform import NameForm
 
 JUNGLE_CS = "jungle_cs"
 
@@ -41,34 +39,10 @@ try:
         return detailed_matches_dict
 
 
-    def get_index_post():
-        form = NameForm()
-        if form.validate_on_submit():
-            game_tag = form.gametag.data
-            tag_line = form.tagline.data
-            try:
-                puuid = get_puuid(game_tag, tag_line)
-            except NotFoundError as ex:
-                return render_template('index.html', form=form, message=ex.message)
-
-            matches = get_matches(puuid)
-            matches_length = len(matches)
-            if matches_length <= 0:
-                message = str(f"No account found for: {game_tag}#{tag_line}. Check for typos and try again")
-                print(message)
-                return render_template('index.html', form=form, message=message)
-
-            if matches_length > 0:
-                message = str(f"Matches for: {game_tag}#{tag_line}")
-                print(message)
-                detailed_matches_dict = get_match_detail(matches, puuid)
-                return render_template('matches.html', form=form, message=message, matches_length=matches_length,
-                                       detailed_matches_dict=detailed_matches_dict, matches=matches, puuid=puuid)
-            else:
-                message = str(f"{game_tag}#{tag_line} found but no recent matches. Check for typos and try again")
-                print(message)
-                return render_template('index.html', form=form, message={message})
-
+    def get_matches_from_user_input(game_tag, tag_line):
+        puuid = service.riotapi.get_puuid(game_tag, tag_line, api_key)
+        matches = get_matches(puuid)
+        return {puuid: get_match_detail(matches, puuid)}
 
     def get_match_timeline(match_id):
         # get match timeline

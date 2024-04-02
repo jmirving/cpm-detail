@@ -14,7 +14,7 @@
 {% for k, v in detailed_matches_dict.items(): %}
 	<div class="container text-center pt-3 pb-3">
 		<div class="row clickable-row pt-2 pl-2 custom-click-row" >
-			<a href="{{ url_for('match', puuid = puuid, participant_id = v['participantId'] , match_id = v['matchId']) }}">Click here for more info!'</a>
+			<a href="{{ url_for('match', puuid = puuid, participant_id = v['participantId'] , match_id = v['matchId']) }}">Click here for more info!</a>
 			<div class="col-md-12">
 				<div class="row">
 					<div class="col-md-6">

@@ -4,33 +4,36 @@ import time
 
 
 class MatchDetails:
-    def __init__(self, dict):
-        self.matchId = dict.get('metadata', {}).get('matchId')
-        self.gameCreation = (datetime.fromtimestamp(dict.get('info', {}).get('gameCreation') // 1000)).strftime("%m-%d %I:%M %p")
-        self.gameDuration = time.strftime('%H:%M:%S',time.gmtime(dict.get('info', {}).get('gameDuration')))
-        self.gameMode = dict.get('info', {}).get('gameMode')
-        self.puuid = dict.get("puuid")
+    def __init__(self, metadata):
+        self.matchId = metadata.get('metadata', {}).get('matchId')
+        self.gameCreation = (datetime.fromtimestamp(metadata.get('info', {}).get('gameCreation') // 1000)).strftime(
+            "%m-%d %I:%M %p")
+        self.gameDuration = time.strftime('%H:%M:%S', time.gmtime(metadata.get('info', {}).get('gameDuration')))
+        self.gameMode = metadata.get('info', {}).get('gameMode')
+        self.puuid = metadata.get("puuid")
 
-    def merge(self, dict):
-        return dict.update(self)
+    def merge(self, metadata):
+        return metadata.update(self)
+
 
 class ParticipantMatchDetails:
-    def __init__(self,dict):
-        self.kills = dict.get('kills')
-        self.deaths = dict.get('deaths')
-        self.assists = dict.get('assists')
-        self.kda = round(dict.get('challenges', {}).get('kda'))
-        self.deaths = dict.get('deaths')
-        self.championId = dict.get('championId')
-        self.championName = dict.get('championName')
-        self.championTransform = dict.get('championTransform')
-        self.lane = dict.get('lane')
-        self.role = dict.get('role')
-        self.individualPosition = dict.get('individualPosition')
-        self.win = dict.get('win')
-        self.participantId = dict.get('participantId')
-        self.riotIdGameName = dict.get('riotIdGameName')
-        self.puuid = dict.get('puuid')
+    def __init__(self, info):
+        self.kills = info.get('kills')
+        self.deaths = info.get('deaths')
+        self.assists = info.get('assists')
+        self.kda = round(info.get('challenges', {}).get('kda'), 1)
+        self.deaths = info.get('deaths')
+        self.championId = info.get('championId')
+        self.championName = info.get('championName')
+        self.championTransform = info.get('championTransform')
+        self.lane = info.get('lane')
+        self.role = info.get('role')
+        self.individualPosition = info.get('individualPosition')
+        self.win = 'Victory' if info.get('win') else 'Defeat'
+        self.participantId = info.get('participantId')
+        self.riotIdGameName = info.get('riotIdGameName')
+        self.puuid = info.get('puuid')
+
 
 def merge(obj1, obj2):
     obj1.__dict__.update(obj2.__dict__)

@@ -1,10 +1,6 @@
+import configparser
 import models.match_detail
 import service.riotapi
-import configparser
-import datetime
-from datetime import datetime
-import time
-
 from errors.not_found_error import NotFoundError
 
 JUNGLE_CS = "jungle_cs"
@@ -16,50 +12,43 @@ config.read_file(open(r'api-key.txt'))
 api_key = config.get('API Key', 'api_key')
 
 try:
-    def get_puuid(game_tag, tag_line):
-        return service.riotapi.get_puuid(game_tag, tag_line, api_key)
-
-
     def get_matches(puuid):
         return service.riotapi.get_matches(puuid, api_key, 5)
 
 
     def get_match_detail(matches, puuid):
-        matches_dict = {}
+        detailed_matches_dict = {}
         for match in matches:
             match_id = match
-            data = service.riotapi.get_match_detail(match_id, api_key)
-            data['puuid'] = puuid
-            participants = data.get("info").get("participants")
-            participant = [item for (index, item) in enumerate(participants) if item.get("puuid") == puuid]
-            participant_detail = {k: v for e in participant for (k, v) in e.items()}
+            match_detail_dict = service.riotapi.get_match_detail(match_id, api_key)
+            match_detail_dict['puuid'] = puuid
+            participants_dict = match_detail_dict.get("info").get("participants")
+            participant_dict = [participant for (index, participant) in enumerate(participants_dict) if
+                                participant.get("puuid") == puuid]
+            participant_detail_dict = {k: v for participant_dict in participant_dict for (k, v) in
+                                       participant_dict.items()}
+            match_detail_dict = models.match_detail.merge(models.match_detail.MatchDetails(match_detail_dict),
+                                                          models.match_detail.ParticipantMatchDetails(
+                                                              participant_detail_dict))
+            detailed_matches_dict[match_id] = match_detail_dict
 
-            match_detail = models.match_detail.MatchDetails(data)
-
-            match_participant_detail = models.match_detail.ParticipantMatchDetails(participant_detail)
-
-            match_id_dict = models.match_detail.merge(match_detail,match_participant_detail)
-
-            matches_dict[match_id] = match_id_dict
-
-        return matches_dict
+        return detailed_matches_dict
 
 
-    def get_matches_ux(matches, puuid):
-        return service.riotapi.get_matches_ux(matches, puuid, api_key)
-
-
-    def get_participant(match_id, puuid):
-        # get participant id
-        return service.riotapi.get_users_participant_id(match_id, puuid, api_key)
-
+    def get_matches_from_user_input(game_tag, tag_line):
+        puuid = service.riotapi.get_puuid(game_tag, tag_line, api_key)
+        matches = get_matches(puuid)
+        return get_match_detail(matches, puuid)
 
     def get_match_timeline(match_id):
         # get match timeline
         match_timeline = service.riotapi.get_match_timeline(match_id, api_key)
+
         return match_timeline.get("info").get("frames")
 
-    def get_cs_per_frame(participant_id, frames):
+
+    def get_cs_per_frame(participant_id, match_id):
+        frames = get_match_timeline(match_id)
         minute_count = 0
         minion_data_dict = {}
         for frame in frames:
@@ -73,7 +62,6 @@ try:
 
         lane_cs_previous_value = 0
         jungle_cs_previous_value = 0
-        total_cs = 0
         frame_count = 0
         output_dict = {}
         for frame in minion_data_dict:
@@ -85,7 +73,8 @@ try:
             lane_frame_diff = lane_cs - lane_cs_previous_value
             jungle_frame_diff = jungle_cs - jungle_cs_previous_value
 
-            output_dict[frame_count] = {"total": total_cs, "lane_diff": lane_frame_diff, "jungle_diff": jungle_frame_diff}
+            output_dict[frame_count] = {"total": total_cs, "lane_diff": lane_frame_diff,
+                                        "jungle_diff": jungle_frame_diff}
 
             # increments
             lane_cs_previous_value = lane_cs_previous_value + lane_frame_diff

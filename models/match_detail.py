@@ -33,6 +33,7 @@ class ParticipantMatchDetails:
         self.participantId = info.get('participantId')
         self.riotIdGameName = info.get('riotIdGameName')
         self.puuid = info.get('puuid')
+        self.win_color = 'gold' if self.win == 'Victory' else 'red'
 
 
 def merge(obj1, obj2):

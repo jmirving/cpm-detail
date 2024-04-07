@@ -1,3 +1,5 @@
+@import "../node_modules/bootstrap/scss/bootstrap";
+
 :root {
     --nav-bar:#054A29;
     --nav-bar-link:#91E86A;
@@ -9,17 +11,26 @@
 }
 
 .custom-click-row {
+    transform: scale3d(1, 1, 1);
+    --h: 88px;   /* the size of the image */
+    --b: 20px;     /* the border thickness*/
+    --g: 0px;    /* the gap */
+    --c: #4ECDC4; /* the color */
     background-color: var(--high-contrast);
-    a:link {
-        color: var(--nav-bar);
-    }
-    a:visited {
-        color: var(--nav-bar);
-    }
-    a:hover {
-        color: var(--darker-neutral);
-    }
+    outline: calc(var(--h)/2) solid #0009;
+    outline-offset: calc(var(--h)/-2);
+    transition: .4s;
+    color: var(--high-contrast);
+    border-radius:10px;
+
 }
+.custom-click-row:hover {
+        background-color: var(--high-contrast);
+        outline: var(--b) solid var(--nav-bar);
+        outline-offset: var(--g);
+        color: black
+}
+
 .base-row {
     background-color: var(--neutral);
 }
@@ -38,3 +49,16 @@
         color: white;
     }
 }
+
+.btn-primary {
+    background-color: var(--nav-bar);
+    color: var(--nav-bar-link);
+    border-color: var(--nav-bar);
+
+}
+
+.btn-primary:hover {
+background-color: var(--high-contrast);
+color: black
+}
+

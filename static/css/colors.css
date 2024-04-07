@@ -9,23 +9,25 @@
 }
 
 .custom-click-row {
-    background-color: var(--high-contrast);
-    a:link {
-        color: var(--nav-bar);
-    }
-    a:visited {
-        color: var(--nav-bar);
-    }
-    a:hover {
-        color: var(--darker-neutral);
-    }
+    background-color: var(--nav-bar);
+    transition: .4s;
+    color: var(--high-contrast);
+    border-radius:10px;
 }
+
+.custom-click-row:hover {
+        background-color: var(--high-contrast);
+        color: black
+}
+
 .base-row {
     background-color: var(--neutral);
 }
+
 .highlight-row {
     background-color: var(--darker-neutral);
 }
+
 .custom-navbar {
     background-color: var(--nav-bar);
     a:link {
@@ -37,4 +39,28 @@
     a:hover {
         color: white;
     }
+}
+
+.btn-primary {
+    background-color: var(--nav-bar);
+    color: var(--nav-bar-link);
+    border-color: var(--nav-bar);
+}
+
+.btn-primary:hover {
+    background-color: var(--high-contrast);
+    color: black
+}
+
+body {
+  .btn {
+    &:focus, &.focus,
+    &:active, &.active {
+        outline: transparent none 0 !important;
+        background-color: var(--nav-bar) !important;
+        color: var(--nav-bar-link) !important;
+        box-shadow: 0 0 0 0 rgba(0,123,255,0) !important;
+        -webkit-box-shadow: none !important;
+    }
+  }
 }

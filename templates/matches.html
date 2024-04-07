@@ -6,17 +6,17 @@
 <div class="container text-center pt-8 pb-5">
   <div class="row">
     <div class="col-xl-12">
-      <h1>Match Results</h1>
+      <h1 class="pt-5">Match Results</h1>
     </div>
   </div>
 </div>
 
 {% for k, v in detailed_matches_dict.items(): %}
 	<div class="container text-center pt-3 pb-3">
-		<div class="row clickable-row pt-2 pl-2 custom-click-row" >
-			<a href="{{ url_for('match', puuid = v['puuid'], participant_id = v['participantId'] , match_id = v['matchId']) }}">Click here for more info!</a>
+		<div class="row pt-2 pl-2 custom-click-row" >
 			<div class="col-md-12">
 				<div class="row">
+					<a href="{{ url_for('match', puuid = v['puuid'], participant_id = v['participantId'] , match_id = v['matchId']) }}" class="stretched-link"></a>
 					<div class="col-md-6">
 						<div class="row">
 							<div class="col-md-6">
@@ -41,14 +41,20 @@
 				<div class="row">
 					<div class="col-md-6">
 						<div class="row">
-							<div class="col-md-6">
-								<p><strong>{{v['win']}}</strong></p>
-							</div>
+							{% if v['win'] == True: %}
+							<div class="col-md-6" style="color: gold">
+								<p><strong>Victory</strong></p>
+								</div>
+							{% else %}
+							<div class="col-md-6" style="color: red">
+								<p><strong>Defeat</strong></p>
+								</div>
+							{% endif %}
 							<div class="col-sm-3">
 								<p><strong>KDA</strong> {{v['kda']}}</p>
 							</div>
 							<div class="col-sm-3">
-								<p><strong>{{v['kills']}}/{{v['deaths']}}/{{v['assists']}}</strong></p>
+								<p><strong> <span style="color:gold">{{v['kills']}}</span>/<span style="color:red">{{v['deaths']}}</span>/<span style="color: #58C2C3">{{v['assists']}}</span></strong></p>
 							</div>
 						</div>
 					</div>

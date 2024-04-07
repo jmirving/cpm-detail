@@ -6,7 +6,7 @@
 <div class="container text-center pt-8 pb-5">
   <div class="row">
     <div class="col-xl-12">
-      <h1 class= "pt-5">Match Results</h1>
+      <h1 class="pt-5">Match Results</h1>
     </div>
   </div>
 </div>
@@ -41,9 +41,15 @@
 				<div class="row">
 					<div class="col-md-6">
 						<div class="row">
-							<div class="col-md-6" style="color: {{v['win_color']}}">
-								<p><strong>{{v['win']}}</strong></p>
+							{% if v['win'] == True: %}
+							<div class="col-md-6" style="color: gold">
+								<p><strong>Victory</strong></p>
 								</div>
+							{% else %}
+							<div class="col-md-6" style="color: red">
+								<p><strong>Defeat</strong></p>
+								</div>
+							{% endif %}
 							<div class="col-sm-3">
 								<p><strong>KDA</strong> {{v['kda']}}</p>
 							</div>

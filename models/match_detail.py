@@ -29,11 +29,11 @@ class ParticipantMatchDetails:
         self.lane = info.get('lane')
         self.role = info.get('role')
         self.individualPosition = info.get('individualPosition')
-        self.win = 'Victory' if info.get('win') else 'Defeat'
+        self.win = info.get('win')
         self.participantId = info.get('participantId')
         self.riotIdGameName = info.get('riotIdGameName')
         self.puuid = info.get('puuid')
-        self.win_color = 'gold' if self.win == 'Victory' else 'red'
+
 
 
 def merge(obj1, obj2):

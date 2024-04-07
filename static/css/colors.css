@@ -13,8 +13,8 @@
     transition: .4s;
     color: var(--high-contrast);
     border-radius:10px;
-
 }
+
 .custom-click-row:hover {
         background-color: var(--high-contrast);
         color: black
@@ -23,9 +23,11 @@
 .base-row {
     background-color: var(--neutral);
 }
+
 .highlight-row {
     background-color: var(--darker-neutral);
 }
+
 .custom-navbar {
     background-color: var(--nav-bar);
     a:link {
@@ -43,7 +45,6 @@
     background-color: var(--nav-bar);
     color: var(--nav-bar-link);
     border-color: var(--nav-bar);
-
 }
 
 .btn-primary:hover {
@@ -51,3 +52,9 @@ background-color: var(--high-contrast);
 color: black
 }
 
+.footer {
+    position: fixed;
+    height: 100px;
+    bottom: 0;
+    width: 100%;
+}

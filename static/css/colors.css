@@ -15,7 +15,7 @@
     --c: #4ECDC4; /* the color */
     background-color: var(--high-contrast);
     outline: calc(var(--h)/2) solid #0009;
-    outline-offset: calc(var(--h)/-3);
+    outline-offset: calc(var(--h)/-2);
     transition: .4s;
     color: var(--high-contrast);
     border-radius:10px;

@@ -48,13 +48,19 @@
 }
 
 .btn-primary:hover {
-background-color: var(--high-contrast);
-color: black
+    background-color: var(--high-contrast);
+    color: black
 }
 
-.footer {
-    position: fixed;
-    height: 100px;
-    bottom: 0;
-    width: 100%;
+body {
+  .btn {
+    &:focus, &.focus,
+    &:active, &.active {
+        outline: transparent none 0 !important;
+        background-color: var(--nav-bar) !important;
+        color: var(--nav-bar-link) !important;
+        box-shadow: 0 0 0 0 rgba(0,123,255,0) !important;
+        -webkit-box-shadow: none !important;
+    }
+  }
 }

@@ -9,13 +9,7 @@
 }
 
 .custom-click-row {
-    --h: 88px;   /* the size of the image */
-    --b: 20px;     /* the border thickness*/
-    --g: 0px;    /* the gap */
-    --c: #4ECDC4; /* the color */
-    background-color: var(--high-contrast);
-    outline: calc(var(--h)/2) solid #0009;
-    outline-offset: calc(var(--h)/-2);
+    background-color: var(--nav-bar);
     transition: .4s;
     color: var(--high-contrast);
     border-radius:10px;
@@ -23,8 +17,6 @@
 }
 .custom-click-row:hover {
         background-color: var(--high-contrast);
-        outline: var(--b) solid var(--nav-bar);
-        outline-offset: var(--g);
         color: black
 }
 

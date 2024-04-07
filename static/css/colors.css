@@ -11,7 +11,6 @@
 }
 
 .custom-click-row {
-    transform: scale3d(1, 1, 1);
     --h: 88px;   /* the size of the image */
     --b: 20px;     /* the border thickness*/
     --g: 0px;    /* the gap */

@@ -9,15 +9,52 @@
 }
 
 .custom-click-row {
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+    transition: .5s;
     background-color: var(--nav-bar);
-    transition: .4s;
     color: var(--high-contrast);
     border-radius:10px;
 }
 
-.custom-click-row:hover {
-        background-color: var(--high-contrast);
-        color: black
+.custom-click-row:after {
+    content: '';
+    position: absolute;
+    z-index: 1;
+    top: 50%;
+    left: 30%;
+    width: 1800px;
+    height: 300px;
+    transform: translate(-140%, -50%);
+    background-color: var(--high-contrast);
+    border-radius: 50%;
+    transition: .5s
+}
+
+.custom-click-row:hover:after {
+    pointer-events: none;
+    transform: translate(-50%, -50%)
+}
+
+i {
+    position: absolute;
+    z-index: 2;
+    top: 50%;
+    left: 50%;
+    transform: translate(-2000px, -50%);
+    color: #fff;
+    transition: .4s;
+    transition-timing-function: ease-in
+}
+
+.custom-click-row:hover i {
+    pointer-events: none;
+    font-weight: bold;
+    font-size: 40px;
+    color: var(--nav-bar);
+    transform: translate(-50%, -50%);
+    transition-timing-function: ease
 }
 
 .base-row {

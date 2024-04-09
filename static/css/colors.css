@@ -101,3 +101,37 @@ body {
     }
   }
 }
+
+div#loading {
+    position:relative;
+    top: 700px;
+    margin: auto;
+    cursor: wait;
+    display: block;
+    border-radius:65%;
+    width: 1px;
+    height: 5px;
+    -webkit-animation: spin 2s linear infinite; /* Safari */
+    animation: spin 6s linear infinite;
+    visibility: hidden;
+    background: url(../DataDragon/Hecarim_4.jpg);
+}
+
+/* Safari */
+@-webkit-keyframes spin {
+    0% { -webkit-transform: rotate(0deg); }
+    100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+div#loading p {
+    font-weight: bold;
+    font-size: 50px;
+    line-height: 250px;
+    color: var(--high-contrast);
+    margin-left: 120px;
+}

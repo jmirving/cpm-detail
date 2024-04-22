@@ -4,13 +4,13 @@
 {% block content %}
 
 
-<div class="container" id="poop">
+<div class="container" id="gameTagContainer">
   <div class="row">
     <div class="col-md-10 col-lg-8 mx-lg-auto mx-md-auto">
 
       <h1 class="pt-5 pb-2">Welcome to CPM Detail</h1>
 
-      {{ render_form(form, id="poppy") }}
+      {{ render_form(form, id="NameForm") }}
 
 
 
@@ -31,11 +31,13 @@ if ((tagline != "" && gametag != "" && tagline.length > 2 && gametag.length > 2)
   $("#loading").css("width", "1100px");
   $("#loading").css("height", "500px");
   $("#loading").css("visibility", "visible");
-  $("#poop").hide();
+  $("#gameTagContainer").hide();
   }
 }
 </script>
+
 <div id="loading">
   <p>Getting Matches</p>
 </div>
+
 {% endblock %}

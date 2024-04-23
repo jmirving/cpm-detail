@@ -1,0 +1,86 @@
+.custom-click-row {
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+    transition: .5s;
+    border-radius:10px;
+}
+
+.custom-click-row:after {
+    content: '';
+    position: absolute;
+    z-index: 1;
+    top: 50%;
+    left: 30%;
+    width: 1800px;
+    height: 300px;
+    transform: translate(-140%, -50%);
+    border-radius: 50%;
+    transition: .5s;
+}
+
+.custom-click-row:hover:after {
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+}
+
+i {
+    position: absolute;
+    z-index: 2;
+    top: 50%;
+    left: 50%;
+    transform: translate(-2000px, -50%);
+    transition: .4s;
+    transition-timing-function: ease-in;
+}
+
+.custom-click-row:hover i {
+    pointer-events: none;
+    font-weight: bold;
+    font-size: 40px;
+    transform: translate(-50%, -50%);
+    transition-timing-function: ease;
+}
+
+body {
+  .btn {
+    &:focus, &.focus,
+    &:active, &.active {
+        outline: transparent none 0 !important;
+        box-shadow: 0 0 0 0 rgba(0,123,255,0) !important;
+        -webkit-box-shadow: none !important;
+    }
+  }
+}
+
+div#loading {
+    position:relative;
+    top: 700px;
+    margin: auto;
+    cursor: wait;
+    display: block;
+    border-radius:65%;
+    width: 1px;
+    height: 5px;
+    -webkit-animation: spin 2s linear infinite;
+    animation: spin 6s linear infinite;
+    visibility: hidden;
+    background: url(../DataDragon/Hecarim_4.jpg);
+}
+
+@-webkit-keyframes spin {
+    0% { -webkit-transform: rotate(0deg); }
+    100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+div#loading p {
+    font-weight: bold;
+    font-size: 50px;
+    line-height: 250px;
+    margin-left: 120px;
+}

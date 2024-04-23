@@ -3,18 +3,41 @@
 {% block title%}Home Page{% endblock%}
 {% block content %}
 
-<div class="container">
+
+<div class="container" id="gameTagContainer">
   <div class="row">
     <div class="col-md-10 col-lg-8 mx-lg-auto mx-md-auto">
 
       <h1 class="pt-5 pb-2">Welcome to CPM Detail</h1>
 
-      {{ render_form(form) }}
+      {{ render_form(form, id="NameForm") }}
+
+
 
       <p class="pt-5"><strong>{{ message }}</strong></p>
 
     </div>
   </div>
+</div>
+
+<script>
+document.getElementById("submit").onclick = function() {loading()};
+
+function loading(){
+var gametag = document.getElementById("gametag").value;
+var tagline = document.getElementById("tagline").value;
+
+if ((tagline != "" && gametag != "" && tagline.length > 2 && gametag.length > 2)) {
+  $("#loading").css("width", "1100px");
+  $("#loading").css("height", "500px");
+  $("#loading").css("visibility", "visible");
+  $("#gameTagContainer").hide();
+  }
+}
+</script>
+
+<div id="loading">
+  <p>Getting Matches</p>
 </div>
 
 {% endblock %}

@@ -1,0 +1,24 @@
+.img img{
+    width: 100px;
+    height: 100px;
+    animation: change-color 2s infinite;
+    filter: grayscale(100%);
+
+}
+
+@keyframes change-color {
+  0% {
+    filter: grayscale(100%);
+  }
+  50% {
+    filter: grayscale(0%);
+  }
+}
+.LoadingBarContainer {
+    width: 1100px;
+    height: 120px;
+    border-radius: 5%;
+    background-color: purple;
+    margin: auto;
+
+}

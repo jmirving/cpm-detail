@@ -15,14 +15,10 @@
 </div>
 
 {% for k, v in csm_detail.items(): %}
-    {% if ( k % 2) == 0: %}
-    <div class="container text-center pt-3 pb-3 base-row">
-    {% else %}
-    <div class="container text-center pt-3 pb-3 highlight-row">
-    {% endif %}
-
-            <div class="col-md-12">
-                <div class="row">
+<div id="expanding-row-wrapper" onclick="showHideRow('hidden-row-{{k}}')">
+    <div class="container text-center pt-3 pb-3 base-row-{{( k % 2)}}">
+        <div class="col-md-12">
+            <div class="row">
                 <div class="col-md-6">
                     <div class="row">
                         <div class="col-md-6">
@@ -43,10 +39,30 @@
                         </div>
                     </div>
                 </div>
-              </div>
             </div>
         </div>
     </div>
+</div>
+<div id="hidden-row-{{k}}" class="hidden_row container text-center pt-3 pb-3 base-row-{{( k % 2)}}">
+    <div class="container text-center pt-3 pb-3 base-row-{{( k % 2)}}">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>Events:</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>example!</strong></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endfor %}
 <div class="container text-center pt-3 pb-3">
         <a class="btn btn-primary btn-lg fixed-bottom" href="javascript:window.history.back();" role="button">Go Back</a>

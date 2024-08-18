@@ -25,11 +25,11 @@ i {
     color: var(--nav-bar);
 }
 
-.base-row {
+.base-row-0 {
     background-color: var(--neutral);
 }
 
-.highlight-row {
+.base-row-1 {
     background-color: var(--darker-neutral);
 }
 

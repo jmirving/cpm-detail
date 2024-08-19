@@ -50,19 +50,19 @@ try:
     def get_cs_per_frame(participant_id, match_id):
         frames = get_match_timeline(match_id)
         minute_count = 0
-        minions_per_minute = {}
+        participant_events_per_minute = {}
         events_per_minute = {}
         for frame in frames:
             # gets participant info for a given minute
             participant_frame = frame.get("participantFrames").get(participant_id)
             minions_killed = participant_frame.get("minionsKilled")
             jungle_minions_killed = participant_frame.get("jungleMinionsKilled")
-            minions_dict = {LANE_CS: minions_killed, ("%s" % JUNGLE_CS): jungle_minions_killed}
-            # assign minion data to a minion array for use later
-            minions_per_minute[minute_count] = minions_dict
+            exp = participant_frame.get("xp")
+            participant_frame_dict = {LANE_CS: minions_killed, ("%s" % JUNGLE_CS): jungle_minions_killed, "exp": exp}
+            participant_events_per_minute[minute_count] = participant_frame_dict
+
             # get events for a given minute
             events_this_minute = frame.get("events")
-
             participant_events_dict = {}
             participant_events_this_minute = 0
             for event in events_this_minute:
@@ -97,17 +97,20 @@ try:
         # Using the metadata we gathered above, calculate the differences in CS
         lane_cs_previous_value = 0
         jungle_cs_previous_value = 0
+        exp_previous_value = 0
         frame_count = 0
         output_dict = {}
 
-        for frame in minions_per_minute:
-            minions = minions_per_minute[frame]
-            lane_cs = minions[LANE_CS]
-            jungle_cs = minions[JUNGLE_CS]
-
+        for frame in participant_events_per_minute:
+            participant_event = participant_events_per_minute[frame]
+            lane_cs = participant_event[LANE_CS]
+            jungle_cs = participant_event[JUNGLE_CS]
             total_cs = lane_cs + jungle_cs
             lane_frame_diff = lane_cs - lane_cs_previous_value
             jungle_frame_diff = jungle_cs - jungle_cs_previous_value
+
+            exp_in_frame = participant_event["exp"]
+            exp_frame_diff = exp_in_frame - exp_previous_value
 
             if frame in events_per_minute:
                 events = events_per_minute[frame]
@@ -115,11 +118,12 @@ try:
                 events = {"event_type": "None", "context": "None"}
 
             output_dict[frame_count] = {"total": total_cs, "lane_diff": lane_frame_diff,
-                                        "jungle_diff": jungle_frame_diff, "events": events}
+                                        "jungle_diff": jungle_frame_diff, "exp": exp_in_frame, "exp_diff": exp_frame_diff, "events": events}
 
             # increments
             lane_cs_previous_value = lane_cs_previous_value + lane_frame_diff
             jungle_cs_previous_value = jungle_cs_previous_value + jungle_frame_diff
+            exp_previous_value = exp_previous_value + exp_frame_diff
             frame_count = frame_count + 1
 
         return output_dict

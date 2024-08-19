@@ -50,12 +50,19 @@
                 <div class="col-md-6">
                     <div class="row">
                         <div class="col-md-6">
-                            <p><strong>Events:</p>
+                            <p><strong>Events:</strong></p>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6">
-                            <p><strong>example!</strong></p>
+                            {% for key, value in v['events'].items(): %}
+                            <p><strong>Type:</strong> {{value['event_type']}}</p>
+                            {% endfor %}
+                        </div>
+                        <div class="col-md-6">
+                            {% for key, value in v['events'].items(): %}
+                            <p><strong>Context:</strong> {{value['context']}}</p>
+                            {% endfor %}
                         </div>
                     </div>
                 </div>

@@ -50,22 +50,58 @@ try:
     def get_cs_per_frame(participant_id, match_id):
         frames = get_match_timeline(match_id)
         minute_count = 0
-        minion_data_dict = {}
+        minions_per_minute = {}
+        events_per_minute = {}
         for frame in frames:
-            participant_frame = frame.get("participantFrames").get(str(participant_id))
+            # gets participant info for a given minute
+            participant_frame = frame.get("participantFrames").get(participant_id)
             minions_killed = participant_frame.get("minionsKilled")
             jungle_minions_killed = participant_frame.get("jungleMinionsKilled")
             minions_dict = {LANE_CS: minions_killed, ("%s" % JUNGLE_CS): jungle_minions_killed}
-            minion_data_dict[minute_count] = minions_dict
+            # assign minion data to a minion array for use later
+            minions_per_minute[minute_count] = minions_dict
+            # get events for a given minute
+            events_this_minute = frame.get("events")
 
+            participant_events_dict = {}
+            participant_events_this_minute = 0
+            for event in events_this_minute:
+                print(str(f"Event: {event}"))
+                event_participant_id = event.get("participantId")
+                print(str(f"Is this eventPID [{event_participant_id}] = the PID [{int(participant_id)}]? {event_participant_id == int(participant_id)}"))
+                if event_participant_id is not None and int(event_participant_id) == int(participant_id):
+                    print(str(f"PID {event_participant_id} is not None and matches the user PID {participant_id}"))
+                    participant_events_dict[participant_events_this_minute] = {"event_type": event.get("type"), "context": "self"}
+
+                elif "assistingParticipantIds" in event and int(participant_id) in event.get("assistingParticipantIds"):
+                    print(str(f"assistingParticipantIds is present and matches the user PID {participant_id}"))
+                    participant_events_dict[participant_events_this_minute] = {"event_type": event.get("type"), "context": "assist"}
+
+                elif "killerId" in event and int(participant_id) == event.get("killerId"):
+                    print(str(f"killerId is present and matches the user PID {participant_id}"))
+                    participant_events_dict[participant_events_this_minute] = {"event_type": event.get("type"), "context": "killer"}
+
+                elif "victimId" in event and int(participant_id) == event.get("victimId"):
+                    print(str(f"victimId is present and matches the user PID {participant_id}"))
+                    participant_events_dict[participant_events_this_minute] = {"event_type": event.get("type"), "context": "victim"}
+
+                participant_events_this_minute = participant_events_this_minute + 1
+
+            if len(participant_events_dict) > 0:
+                print(str(f"Event present!"))
+                events_per_minute[minute_count] = participant_events_dict
+
+            # go to the next frame
             minute_count = minute_count + 1
 
+        # Using the metadata we gathered above, calculate the differences in CS
         lane_cs_previous_value = 0
         jungle_cs_previous_value = 0
         frame_count = 0
         output_dict = {}
-        for frame in minion_data_dict:
-            minions = minion_data_dict[frame]
+
+        for frame in minions_per_minute:
+            minions = minions_per_minute[frame]
             lane_cs = minions[LANE_CS]
             jungle_cs = minions[JUNGLE_CS]
 
@@ -73,8 +109,13 @@ try:
             lane_frame_diff = lane_cs - lane_cs_previous_value
             jungle_frame_diff = jungle_cs - jungle_cs_previous_value
 
+            if frame in events_per_minute:
+                events = events_per_minute[frame]
+            else:
+                events = {"event_type": "None", "context": "None"}
+
             output_dict[frame_count] = {"total": total_cs, "lane_diff": lane_frame_diff,
-                                        "jungle_diff": jungle_frame_diff}
+                                        "jungle_diff": jungle_frame_diff, "events": events}
 
             # increments
             lane_cs_previous_value = lane_cs_previous_value + lane_frame_diff

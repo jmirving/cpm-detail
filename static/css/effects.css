@@ -53,6 +53,10 @@ body {
   }
 }
 
+.hidden_row {
+    display: none;
+}
+
 div#loading {
     position:relative;
     top: 700px;

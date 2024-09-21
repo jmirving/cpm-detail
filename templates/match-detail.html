@@ -4,15 +4,24 @@
 {% block content %}
 
 <div class="container text-center pt-8 pb-5">
-  <div class="row">
-    <div class="col-xl-12">
-      <h1 class="pt-5">Match Results</h1>
+    <div class="row">
+        <div class="col-xl-12">
+            <h1 class="pt-5">Match Results</h1>
+        </div>
+        <div class="col-xl-12 pt-3">
+            <h2>{{ message }}</h2>
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-6">
+                    <!-- TODO: Jhin is hard coded right now. Need to add to champ_expert_mapper.csv and then change this to be variable -->
+                    <p><a href="{{ url_for('compare', puuid = puuid, participant_id = participant_id , match_id = match_id, champ_name = 'Jhin') }} " class="stretched-link">Compare</a></p>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="col-xl-12 pt-3">
-      <h2>{{ message }}</h2>
-    </div>
-  </div>
 </div>
+
 
 {% for k, v in csm_detail.items(): %}
 <div id="expanding-row-wrapper" onclick="showHideRow('hidden-row-{{k}}')">
@@ -32,10 +41,7 @@
                 <div class="col-md-6">
                     <div class="row">
                         <div class="col-md-6">
-                            <p><strong>Lane CS Added:</strong> {{v['lane_diff']}}</p>
-                        </div>
-                        <div class="col-md-6">
-                            <p><strong>Jungle CS Added:</strong> {{v['jungle_diff']}}</p>
+                            <p><strong>CS (Lane, Jungle) Added:</strong> {{v['lane_diff']}}, {{v['jungle_diff']}}</p>
                         </div>
                     </div>
                 </div>
@@ -47,7 +53,7 @@
                             <p></p>
                         </div>
                         <div class="col-md-6">
-                            <p><strong>Total Exp: </strong> {{ v['exp'] }}</p>
+                            <p><strong>Total Exp: </strong> {{ v['exp'] }} <strong>Level: </strong>{{ v['level'] }}</p>
                         </div>
                     </div>
                 </div>
@@ -55,6 +61,25 @@
                     <div class="row">
                         <div class="col-md-6">
                             <p><strong>Exp Added:</strong> {{v['exp_diff']}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p></p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Total Gold: </strong> {{ v['gold'] }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>Gold Added:</strong> {{v['gold_diff']}}</p>
                         </div>
                     </div>
                 </div>
@@ -91,7 +116,7 @@
 </div>
 {% endfor %}
 <div class="container text-center pt-3 pb-3">
-        <a class="btn btn-primary btn-lg fixed-bottom" href="javascript:window.history.back();" role="button">Go Back</a>
+    <a class="btn btn-primary btn-lg fixed-bottom" href="javascript:window.history.back();" role="button">Go Back</a>
 </div>
 
 

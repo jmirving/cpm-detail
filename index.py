@@ -4,7 +4,6 @@ from flask import Flask, render_template
 from flask_bootstrap import Bootstrap5
 from flask_wtf import CSRFProtect
 
-from cpmdetail import get_comparison
 from errors.not_found_error import NotFoundError
 from myforms.nameform import NameForm
 
@@ -48,16 +47,16 @@ def index_post():
 
 @app.route("/<puuid>/<participant_id>/match/<match_id>/<champ_name>")
 def match(puuid, participant_id, match_id, champ_name):
-    message = str(f"CPM for a {champ_name} game")
-    csm_detail = cpmdetail.get_cs_per_frame(participant_id, match_id)
+    message = str(f"CPM for {champ_name} game")
+    cpm_detail = cpmdetail.get_cs_per_frame(participant_id, match_id)
     print(str(f"Getting {match_id} match for {puuid}:{participant_id}"))
-    return render_template('match-detail.html', message=message, csm_detail=csm_detail, puuid=puuid, participant_id=participant_id, match_id=match_id, champ_name=champ_name)
+    return render_template('match-detail.html', message=message, cpm_detail=cpm_detail, puuid=puuid, participant_id=participant_id, match_id=match_id, champ_name=champ_name)
 
 @app.route("/<puuid>/<participant_id>/match/<match_id>/<champ_name>/compare")
 def compare(puuid, participant_id, match_id, champ_name):
 
     # average data or some other compare if more than one, then return data
-    compare_detail = get_comparison(participant_id, match_id, champ_name)
+    compare_detail = cpmdetail.get_comparison(participant_id, match_id, champ_name)
 
     # fill in Subtitle via message
     message = str(f"Comparing your game on {champ_name} to Experts")

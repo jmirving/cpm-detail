@@ -76,7 +76,6 @@ try:
         participant_frames_array = {}
         events_per_minute = {}
         for frame in frames:
-            print(f"Got frame: {frame}")
             # gets participant info for a given minute
             participant_frame = frame.get("participantFrames").get(participant_id)
             print(f"Getting participant frame {participant_frame} for participant ID {participant_id}")
@@ -94,33 +93,26 @@ try:
             participant_events_dict = {}
             participant_events_this_minute = 0
             for event in events_this_minute:
-                # print(str(f"Event: {event}"))
                 event_participant_id = event.get("participantId")
-                # print(str(f"Is this eventPID [{event_participant_id}] = the PID [{int(participant_id)}]? {event_participant_id == int(participant_id)}"))
                 if event_participant_id is not None and int(event_participant_id) == int(participant_id):
-                    # print(str(f"PID {event_participant_id} is not None and matches the user PID {participant_id}"))
                     participant_events_dict[participant_events_this_minute] = {"event_type": event.get("type"),
                                                                                "context": "self"}
 
                 elif "assistingParticipantIds" in event and int(participant_id) in event.get("assistingParticipantIds"):
-                    # print(str(f"assistingParticipantIds is present and matches the user PID {participant_id}"))
                     participant_events_dict[participant_events_this_minute] = {"event_type": event.get("type"),
                                                                                "context": "assist"}
 
                 elif "killerId" in event and int(participant_id) == event.get("killerId"):
-                    # print(str(f"killerId is present and matches the user PID {participant_id}"))
                     participant_events_dict[participant_events_this_minute] = {"event_type": event.get("type"),
                                                                                "context": "killer"}
 
                 elif "victimId" in event and int(participant_id) == event.get("victimId"):
-                    # print(str(f"victimId is present and matches the user PID {participant_id}"))
                     participant_events_dict[participant_events_this_minute] = {"event_type": event.get("type"),
                                                                                "context": "victim"}
 
                 participant_events_this_minute = participant_events_this_minute + 1
 
             if len(participant_events_dict) > 0:
-                # print(str(f"Event present!"))
                 events_per_minute[minute_count] = participant_events_dict
 
             # go to the next frame
@@ -172,14 +164,11 @@ try:
 
     def get_comparison(participant_id, match_id, champ_name):
         # look up 1 or more skilled players on this champ from a static look up table
-        print(str(f"Getting experts for {champ_name}"))
         results = champ_expert_mapper[champ_expert_mapper['champ_name'].str.lower() == champ_name.lower()]
         # return 1 or more results
         expert = results['expert'].values[0]
         tag = results['tag'].values[0]
-        print(str(f"Getting puuid for {expert}:{tag}"))
         expert_puuid = get_puuid_from_data(expert, tag)
-        print(str(f"Retrieved {expert_puuid}"))
 
         expert_last_match = get_last_match(expert_puuid)
         expert_match_detail = get_single_match_detail(expert_last_match, expert_puuid)
@@ -214,7 +203,6 @@ try:
                                           "expert_gold_added": expert_cs_per_frame[i]['gold_diff']}
 
         return comparison_frames_array
-
 
 
 except NotFoundError:

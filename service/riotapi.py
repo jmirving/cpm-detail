@@ -42,6 +42,7 @@ def get_match_timeline(match_id, api_key):
 
 def get_response_json(url):
     try:
+        print("API URL: " + url + "")
         response = requests.get(url)
         status_code = response.status_code
         if status_code != 200:

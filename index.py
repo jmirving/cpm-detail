@@ -18,7 +18,6 @@ bootstrap = Bootstrap5(app)
 # Flask-WTF requires this line
 csrf = CSRFProtect(app)
 
-
 @app.route("/hello-world")
 def hello():
     return "Hello World"
@@ -46,13 +45,23 @@ def index_post():
     return render_template('index.html', form=form, message="Invalid Form")
 
 
-@app.route("/<puuid>/<participant_id>/match/<match_id>")
-def match(puuid, participant_id, match_id):
-    message = str(f"CSM for {match_id}")
-    csm_detail = cpmdetail.get_cs_per_frame(participant_id, match_id)
+@app.route("/<puuid>/<participant_id>/match/<match_id>/<champ_name>")
+def match(puuid, participant_id, match_id, champ_name):
+    message = str(f"CPM for {champ_name} game")
+    cpm_detail = cpmdetail.get_cs_per_frame(participant_id, match_id)
     print(str(f"Getting {match_id} match for {puuid}:{participant_id}"))
-    return render_template('match-detail.html', message=message, csm_detail=csm_detail)
+    return render_template('match-detail.html', message=message, cpm_detail=cpm_detail, puuid=puuid, participant_id=participant_id, match_id=match_id, champ_name=champ_name)
 
+@app.route("/<puuid>/<participant_id>/match/<match_id>/<champ_name>/compare")
+def compare(puuid, participant_id, match_id, champ_name):
+
+    # average data or some other compare if more than one, then return data
+    compare_detail = cpmdetail.get_comparison(participant_id, match_id, champ_name)
+
+    # fill in Subtitle via message
+    message = str(f"Comparing your game on {champ_name} to Experts")
+    # return page
+    return render_template('match-compare.html', message=message, compare_detail=compare_detail)
 
 if __name__ == "__main__":
     app.run(debug=True)

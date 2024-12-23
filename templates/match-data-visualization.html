@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+{% from 'bootstrap5/form.html' import render_form %}
+{% block title%}Match Detail{% endblock%}
+{% block content %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<div class="container text-center pt-8 pb-5">
+    <div class="row">
+        <div class="col-xl-12">
+            <h1 class="pt-5">Match Results</h1>
+        </div>
+        <div class="col-xl-12 pt-3">
+            <h2>{{ message }}</h2>
+        </div>
+    </div>
+</div>
+
+<style>
+        /* Ensure the chart container scales responsively */
+        #chart-container {
+            width: 100%; /* Full width of the screen */
+            max-width: 100%; /* Prevent overflow */
+            height: auto; /* Automatically scale height */
+            max-height: 950px;
+        }
+
+        canvas {
+            display: block; /* Remove inline canvas display */
+        }
+    </style>
+    <div id="chart-container">
+
+<canvas id="myChart"></canvas>
+        <script>
+        const ctx = document.getElementById("myChart").getContext("2d");
+        new Chart(ctx, {
+            type: "bar", // Line chart type
+            data: {
+                labels: {{ labels | tojson}},
+                datasets: [
+                    {
+                        label: "CPM",
+                        data: {{ cpmData | tojson}},
+                        borderColor: "rgba(64, 255, 0, 1)",
+                        backgroundColor: "rgba(64, 255, 0, 0.6)",
+                        yAxisID: "y",
+                    },
+                    {
+                        label: "Exp",
+                        data: {{ expData | tojson}},
+                        borderColor: "rgba(137, 176, 168, 1)",
+                        backgroundColor: "rgba(137, 176, 168, 0.6)",
+                        yAxisID: "y1",
+                    },
+                ],
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: {
+                        ticks: {
+                            font: {
+                                size: 18, // Increase the size of x-axis labels
+                            },
+                        },
+                        title: {
+                            display: true,
+                            text: "Minutes",
+                            font: {
+                                size: 20, // Increase the size of x-axis title
+                            },
+                        },
+                    },
+                    y: {
+                        ticks: {
+                            font: {
+                                size: 18, // Increase the size of labels
+                            },
+                        },
+                        type: "linear",
+                        position: "left",
+                        title: {
+                            display: true,
+                            text: "CPM",
+                            font: {
+                                size: 20, // Increase the size of title
+                            },
+                        },
+                    },
+                    y1: {
+                        ticks: {
+                            font: {
+                                size: 18, // Increase the size of labels
+                            },
+                        },
+                        type: "linear",
+                        position: "right",
+                        title: {
+                            display: true,
+                            text: "Exp",
+                            font: {
+                                size: 20, // Increase the size of title
+                            },
+                        },
+                        grid: {
+                            drawOnChartArea: false, // Prevents gridlines overlapping
+                        },
+                    },
+                },
+            },
+        });
+    </script>
+</div>
+
+<div class="container text-center pt-3 pb-3">
+    <a class="btn btn-primary btn-lg fixed-bottom" href="javascript:window.history.back();" role="button">Go Back</a>
+</div>
+
+{% endblock %}

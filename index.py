@@ -52,6 +52,24 @@ def match(puuid, participant_id, match_id, champ_name):
     print(str(f"Getting {match_id} match for {puuid}:{participant_id}"))
     return render_template('match-detail.html', message=message, cpm_detail=cpm_detail, puuid=puuid, participant_id=participant_id, match_id=match_id, champ_name=champ_name)
 
+@app.route("/<puuid>/<participant_id>/match-visual/<match_id>/<champ_name>")
+def visual(puuid, participant_id, match_id, champ_name):
+    message = str(f"CPM for {champ_name} game")
+    # Define Plot Data
+    cpm_detail = cpmdetail.get_cs_per_frame(participant_id, match_id)
+    labels = []
+    cpmData = []
+    expData = []
+    for k, v in cpm_detail.items():
+        labels.append(k)
+        cpmData.append(v['lane_diff'])
+        expData.append(v['exp_diff'])
+
+    print(str(f"Getting {match_id} match for {puuid}:{participant_id}"))
+    return render_template('match-data-visualization.html', message=message, labels=labels, cpmData=cpmData, expData=expData, puuid=puuid,
+                           participant_id=participant_id, match_id=match_id, champ_name=champ_name)
+
+
 @app.route("/<puuid>/<participant_id>/match/<match_id>/<champ_name>/compare")
 def compare(puuid, participant_id, match_id, champ_name):
 
